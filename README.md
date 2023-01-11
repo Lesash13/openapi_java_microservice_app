@@ -93,7 +93,7 @@ http://127.0.0.1:4443/integratedPeopleManagement/v1/house/0
 
 [dependency-shield]: https://img.shields.io/badge/Dependency_Graph-darkgreen?style=for-the-badge
 
-[dependency-url]: https://github.com/Lesash13/social_network_python_app/network/dependencies
+[dependency-url]: https://github.com/Lesash13/openapi_java_microservice_app/network/dependencies
 
 [linkedin-shield]: https://img.shields.io/badge/-LinkedIn-black.svg?style=for-the-badge&logo=linkedin&colorB=darkblue
 
