@@ -37,24 +37,40 @@ gradle clean
 gradle build
 ```
 
-#### Setup endpoints for client and server, set connection to db:
-
-```
-resources/application.yaml
-```
-
-## Usage
-
 #### Build interface and objects for server PeopleService:
 
 ```sh
 gradle buildCxfServer
 ```
 
-#### Build interface and objects for server PeopleService:
+#### Build interface and objects for client PeopleService:
 
 ```sh
 gradle buildCxfClient
+```
+## Usage
+
+#### Start docker with postgres on port 5555:
+```sh
+cd dockerdb
+docker build -t dbtest .
+```
+```sh
+docker run --publish 5555:5432 dbtest
+```
+
+#### Upgrade db by running sql script or start docker flyway
+
+```
+cd flyway for docker build
+or 
+resources/db/autogen/V1__creation_script.sql
+```
+
+#### Setup endpoints for client and server, set connection to db:
+
+```
+resources/application.yaml
 ```
 
 #### Run service:
@@ -68,25 +84,19 @@ gradle bootRun
 API :
 
 ```
-http://127.0.0.1:4443/integratedPeopleManagement/v1/
+http://127.0.0.1:8080/api/integratedPeopleManagement/v1/
 ```
 
 Get / delete request:
 
 ```
-http://127.0.0.1:4443/integratedPeopleManagement/v1/people/{id}
-```
-
-Find person by status request:
-
-```
-http://127.0.0.1:4443/integratedPeopleManagement/v1/people/findByStatus
+http://127.0.0.1:8080/api/integratedPeopleManagement/v1/people/{id}
 ```
 
 House get request:
 
 ```
-http://127.0.0.1:4443/integratedPeopleManagement/v1/house/0
+http://127.0.0.1:8080/api/integratedPeopleManagement/v1/house/0
 ```
 
 <!-- MARKDOWN LINKS & IMAGES -->

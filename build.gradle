@@ -1,12 +1,11 @@
 import org.openapitools.generator.gradle.plugin.tasks.GenerateTask
 
 plugins {
-    id 'org.springframework.boot' version "$springBootVersion"
-    id 'io.spring.dependency-management' version '1.0.9.RELEASE'
+    id 'org.springframework.boot' version "${springBootVersion}"
+    id 'io.spring.dependency-management' version "${springDependencyManagement}"
     id 'java'
-    id "org.sonarqube" version "2.8"
-    id "org.openapi.generator" version "$openapiGenVersion"
-    id 'pl.allegro.tech.build.axion-release' version '1.9.3'
+    id 'org.openapi.generator' version "${openapiGenVersion}"
+    id 'pl.allegro.tech.build.axion-release' version "$allegroBuild"
 }
 
 scmVersion {
@@ -24,20 +23,16 @@ scmVersion {
 
 group = 'ngfs.integratedpeoplemanagement'
 version = scmVersion.version
-//sourceCompatibility = JavaVersion.VERSION_13
 
 tasks.withType(JavaCompile) {
     options.encoding = "$sourceEncoding"
-    //   options.compilerArgs.add("--enable-preview")
 }
 
 repositories {
     mavenCentral()
 }
 
-//redefine parameters for integration tests
 bootRun {
-    //  jvmArgs(['--enable-preview'])
 }
 
 sourceSets {
@@ -76,7 +71,6 @@ dependencies {
     implementation("javax.xml.ws:jaxws-api:$jaxwsVersion") { transitive = false }
     implementation("net.logstash.logback:logstash-logback-encoder:$logstashEncoderVersion") { transitive = false }
     implementation "org.apache.cxf:cxf-rt-features-logging:$cxfSpringBootVersion"
-    implementation "org.springframework.cloud:spring-cloud-starter-kubernetes-config:$springCloudStarterKubernetesConfig"
     implementation "org.springframework.boot:spring-boot-starter-actuator:$springBootVersion"
     implementation "org.springframework.boot:spring-boot-starter-data-jpa:$springBootVersion"
     implementation "org.postgresql:postgresql:$postgresDriverVersion"
@@ -105,7 +99,6 @@ dependencies {
 
 test {
     useJUnitPlatform()
-    //  jvmArgs(['--enable-preview'])
 }
 
 bootJar {

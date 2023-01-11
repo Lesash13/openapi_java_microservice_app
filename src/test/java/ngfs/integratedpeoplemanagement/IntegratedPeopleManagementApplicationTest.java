@@ -1,8 +1,9 @@
 package ngfs.integratedpeoplemanagement;
 
-import org.junit.Test;
 
-import static org.junit.Assert.assertTrue;
+import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
  * This class is simple test to check that application runs the tests.

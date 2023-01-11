@@ -1,17 +1,17 @@
 cxf:
-  path: /ng-fs-api
+  path: /api
   endpoint-address: /integratedPeopleManagement/v1
   jaxrs:
     client:
-      address: houseservice:4443
+      address: http://127.0.0.1:4443
       classes-scan-packages: ngfs.integratedpeoplemanagement.houseservice
 spring:
   application:
     name: integrated-people-management
   datasource:
-    url: jdbc:postgresql://localhost:5432/db
-    username: dev_09_ipm
-    password: dev_09_ipm
+    url: jdbc:postgresql://localhost:5555/test
+    username: user
+    password: pass
     driver-class-name: org.postgresql.Driver
   jpa:
     hibernate:

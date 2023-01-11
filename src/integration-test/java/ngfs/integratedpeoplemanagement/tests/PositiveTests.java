@@ -1,13 +1,11 @@
 package ngfs.integratedpeoplemanagement.tests;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.github.tomakehurst.wiremock.client.WireMock;
 import io.restassured.RestAssured;
 import ngfs.integratedpeoplemanagement.IntegratedPeopleManagementApplication;
 import ngfs.integratedpeoplemanagement.configuration.TestHelper;
 import ngfs.integratedpeoplemanagement.configuration.TestJpaConfiguration;
 import ngfs.integratedpeoplemanagement.entity.People;
-import ngfs.integratedpeoplemanagement.extension.annotation.MockServer;
 import ngfs.integratedpeoplemanagement.peopleservice.model.AddressDto;
 import ngfs.integratedpeoplemanagement.peopleservice.model.PeopleDto;
 import ngfs.integratedpeoplemanagement.repository.PeopleRepository;
@@ -37,7 +35,6 @@ import static org.hamcrest.Matchers.emptyString;
 @SpringBootTest(classes = {IntegratedPeopleManagementApplication.class, TestJpaConfiguration.class})
 @ActiveProfiles("integration-test")
 @Transactional
-@MockServer
 public class PositiveTests extends TestHelper {
 
     private static final Logger LOGGER = Logger.getLogger(PositiveTests.class.getName());
@@ -62,14 +59,12 @@ public class PositiveTests extends TestHelper {
     @Test
     public void CreateAndGetPeoplePositive() {
 
-        WireMock.stubFor(get(urlEqualTo(houseServicePathForGet)).willReturn(
+        vm.stubFor(get(urlEqualTo(houseServicePathForGet)).willReturn(
                 aResponse().withHeader(HttpHeaders.CONTENT_TYPE, ContentType.APPLICATION_JSON.getMimeType())
                         .withBody(houseJson)
                         .withStatus(HttpStatus.SC_OK)));
 
         PeopleDto postPerson = getPerson("Add", "Person");
-        LOGGER.info("Send POST to create a person");
-
         RestAssured.given()
                 .contentType(ContentType.APPLICATION_JSON.getMimeType())
                 .body(postPerson)
@@ -137,7 +132,7 @@ public class PositiveTests extends TestHelper {
     @Test
     protected void GetChildrenAddressesPositive() {
 
-        WireMock.stubFor(get(urlEqualTo(houseServicePathForGet)).willReturn(
+        vm.stubFor(get(urlEqualTo(houseServicePathForGet)).willReturn(
                 aResponse().withHeader(HttpHeaders.CONTENT_TYPE, ContentType.APPLICATION_JSON.getMimeType())
                         .withBody(houseJson)
                         .withStatus(HttpStatus.SC_OK)));
@@ -190,19 +185,19 @@ public class PositiveTests extends TestHelper {
         Assertions.assertTrue(Arrays.asList(getAddress).contains(child.getAddressData()),
                 "Address data of child doesn`t match with response");
 
-        WireMock.verify(getRequestedFor(urlEqualTo(houseServicePathForGet)));
+        vm.verify(getRequestedFor(urlEqualTo(houseServicePathForGet)));
     }
 
     @Test
     protected void FindPersonByStatusPositive() {
         LOGGER.info("Set mock for HouseService");
 
-        WireMock.stubFor(get(urlEqualTo(houseServicePathForGet)).atPriority(1)
+        vm.stubFor(get(urlEqualTo(houseServicePathForGet)).atPriority(1)
                 .willReturn(aResponse().withHeader(HttpHeaders.CONTENT_TYPE, ContentType.APPLICATION_JSON.getMimeType())
                         .withBody(houseJson)
                         .withStatus(HttpStatus.SC_OK)));
 
-        WireMock.stubFor(put(urlEqualTo(houseServicePathForPut)).atPriority(2)
+        vm.stubFor(put(urlEqualTo(houseServicePathForPut)).atPriority(2)
                 .willReturn(aResponse().withStatus(HttpStatus.SC_NO_CONTENT)));
 
         PeopleDto postPerson = getPerson("FindStatus", "Person");
@@ -239,15 +234,15 @@ public class PositiveTests extends TestHelper {
         }
         Assertions.assertTrue(exists);
 
-        WireMock.verify(getRequestedFor(urlEqualTo(houseServicePathForGet)));
-        WireMock.verify(putRequestedFor(urlEqualTo(houseServicePathForPut)));
+        vm.verify(getRequestedFor(urlEqualTo(houseServicePathForGet)));
+        vm.verify(putRequestedFor(urlEqualTo(houseServicePathForPut)));
 
     }
 
     @Test
     public void UpdateExistedPeoplePutPositive() {
 
-        WireMock.stubFor(get(urlEqualTo(houseServicePathForGet)).willReturn(
+        vm.stubFor(get(urlEqualTo(houseServicePathForGet)).willReturn(
                 aResponse().withHeader(HttpHeaders.CONTENT_TYPE, ContentType.APPLICATION_JSON.getMimeType())
                         .withBody(houseJson)
                         .withStatus(HttpStatus.SC_OK)));
@@ -296,7 +291,7 @@ public class PositiveTests extends TestHelper {
     @Test
     public void UpdateExistedPeoplePostPositive() {
 
-        WireMock.stubFor(get(urlEqualTo(houseServicePathForGet)).willReturn(
+        vm.stubFor(get(urlEqualTo(houseServicePathForGet)).willReturn(
                 aResponse().withHeader(HttpHeaders.CONTENT_TYPE, ContentType.APPLICATION_JSON.getMimeType())
                         .withBody(houseJson)
                         .withStatus(HttpStatus.SC_OK)));

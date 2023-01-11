@@ -118,7 +118,7 @@ public class PeopleApiImpl implements PeopleApi {
     }
 
     @Override
-    public Response getChildrenAdresses(Long peopleId) {
+    public Response getChildrenAddresses(Long peopleId) {
         List<AddressDto> childrenAddresses;
         try {
             childrenAddresses = service.getChildrenAddresses(peopleId);

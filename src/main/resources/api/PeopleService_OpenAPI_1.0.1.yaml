@@ -81,12 +81,12 @@ paths:
         '400':
           description: Invalid status value
           content: { }
-  '/people/{peopleId}/getChildrenAdresses':
+  '/people/{peopleId}/getChildrenAddresses':
     get:
       tags:
         - people
       summary: Returns addresses of children given person
-      operationId: getChildrenAdresses
+      operationId: getChildrenAddresses
       parameters:
         - name: peopleId
           in: path

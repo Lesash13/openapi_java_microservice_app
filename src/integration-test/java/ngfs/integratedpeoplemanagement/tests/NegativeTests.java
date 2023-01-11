@@ -1,6 +1,5 @@
 package ngfs.integratedpeoplemanagement.tests;
 
-import com.github.tomakehurst.wiremock.client.WireMock;
 import com.github.tomakehurst.wiremock.http.RequestMethod;
 import com.github.tomakehurst.wiremock.matching.RequestPatternBuilder;
 import io.restassured.RestAssured;
@@ -8,7 +7,6 @@ import ngfs.integratedpeoplemanagement.IntegratedPeopleManagementApplication;
 import ngfs.integratedpeoplemanagement.configuration.TestHelper;
 import ngfs.integratedpeoplemanagement.configuration.TestJpaConfiguration;
 import ngfs.integratedpeoplemanagement.entity.People;
-import ngfs.integratedpeoplemanagement.extension.annotation.MockServer;
 import ngfs.integratedpeoplemanagement.peopleservice.model.PeopleDto;
 import ngfs.integratedpeoplemanagement.repository.PeopleRepository;
 import org.apache.http.HttpHeaders;
@@ -33,7 +31,6 @@ import static org.hamcrest.Matchers.emptyString;
 @SpringBootTest(classes = {IntegratedPeopleManagementApplication.class, TestJpaConfiguration.class})
 @ActiveProfiles("integration-test")
 @Transactional
-@MockServer
 public class NegativeTests extends TestHelper {
 
     private static final Logger LOGGER = Logger.getLogger(NegativeTests.class.getName());
@@ -59,13 +56,11 @@ public class NegativeTests extends TestHelper {
     protected void GetPersonByID() {
 
         LOGGER.info("Set mock delay more than 1 min");
-        WireMock.resetAllRequests();
-
-        WireMock.stubFor(get(urlEqualTo(houseServicePathForGet)).willReturn(
+        vm.stubFor(get(urlEqualTo(houseServicePathForGet)).willReturn(
                 aResponse().withHeader(HttpHeaders.CONTENT_TYPE, ContentType.APPLICATION_JSON.getMimeType())
                         .withBody(houseJson)
                         .withStatus(HttpStatus.SC_OK)
-                        .withFixedDelay(61000)));
+                        .withFixedDelay(62000)));
 
         PeopleDto postPerson = getPerson("FindById", "Person");
         LOGGER.info("Send POST to create a person");
@@ -90,7 +85,7 @@ public class NegativeTests extends TestHelper {
                 .statusCode(HttpStatus.SC_GATEWAY_TIMEOUT)
                 .body(emptyString());
 
-        WireMock.verify(2, new RequestPatternBuilder(RequestMethod.GET, urlEqualTo(houseServicePathForGet)));
+        vm.verify(1, new RequestPatternBuilder(RequestMethod.GET, urlEqualTo(houseServicePathForGet)));
     }
 
     @Test
