@@ -1,0 +1,248 @@
+openapi: 3.0.1
+info:
+  title: People management service
+  description: This is a sample API of People management service.
+  version: 1.0.3
+servers:
+  - url: 'https://people.service.de/v1'
+  - url: 'http://people.service.de/v1'
+tags:
+  - name: people
+    description: Everything about people
+paths:
+  /people:
+    put:
+      tags:
+        - people
+      summary: Update an existing people profile
+      operationId: updatePeople
+      requestBody:
+        description: update people profile
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/People'
+        required: true
+      responses:
+        '404':
+          description: people not found
+          content: { }
+        '405':
+          description: Validation exception
+          content: { }
+      x-codegen-request-body-name: body
+    post:
+      tags:
+        - people
+      summary: Add a new people profile
+      operationId: addPeople
+      requestBody:
+        description: Add a new people profile
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/People'
+        required: true
+      responses:
+        '405':
+          description: Invalid input
+          content: { }
+      x-codegen-request-body-name: body
+  /people/findByStatus:
+    get:
+      tags:
+        - people
+      summary: Finds people by status
+      description: Multiple status values can be provided with comma separated strings
+      operationId: findPeopleByStatus
+      parameters:
+        - name: status
+          in: query
+          description: Status values that need to be considered for filter
+          required: true
+          style: form
+          explode: true
+          schema:
+            type: string
+            default: alive
+            minLength: 4
+            enum:
+              - alive
+              - not alive
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/People'
+        '400':
+          description: Invalid status value
+          content: { }
+  '/people/{peopleId}/getChildrenAdresses':
+    get:
+      tags:
+        - people
+      summary: Returns addresses of children given person
+      operationId: getChildrenAdresses
+      parameters:
+        - name: peopleId
+          in: path
+          description: ID of people to return
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Address'
+        '400':
+          description: Invalid status value
+          content: { }
+  '/people/{peopleId}':
+    get:
+      tags:
+        - people
+      summary: Find people by ID
+      description: Returns a single people
+      operationId: getPeopleById
+      parameters:
+        - name: peopleId
+          in: path
+          description: ID of people to return
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/People'
+        '400':
+          description: Invalid ID supplied
+          content: { }
+        '404':
+          description: people not found
+          content: { }
+    post:
+      tags:
+        - people
+      summary: Updates a people profile with form data
+      operationId: updatePeopleWithForm
+      parameters:
+        - name: peopleId
+          in: path
+          description: ID of people that needs to be updated
+          required: true
+          schema:
+            type: integer
+            format: int64
+      requestBody:
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              properties:
+                firstname:
+                  type: string
+                  description: Updated name of the people
+                  minLength: 4
+                lastname:
+                  type: string
+                  description: Updated name of the people
+                status:
+                  type: string
+                  description: Updated status of the people
+      responses:
+        '404':
+          description: people not found
+          content: { }
+    delete:
+      tags:
+        - people
+      summary: Deletes a people profile
+      operationId: deletePeople
+      parameters:
+        - name: peopleId
+          in: path
+          description: people id to delete
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '404':
+          description: people not found
+          content: { }
+components:
+  schemas:
+    Address:
+      type: object
+      properties:
+        homeIds:
+          description: id of owned houses
+          type: array
+          items:
+            type: integer
+            format: int64
+          uniqueItems: true
+        registrationId:
+          description: id of house where people registered
+          type: integer
+          format: int64
+      xml:
+        name: Address
+    People:
+      required:
+        - firstname
+        - lastname
+        - birthday
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        addressData:
+          $ref: '#/components/schemas/Address'
+        birthday:
+          description: validation rule - our system doesn't support years before 1980
+          type: string
+          format: date
+        firstname:
+          type: string
+          example: Gans
+          minLength: 1
+          maxLength: 20
+        lastname:
+          type: string
+          example: Anderson
+          minLength: 1
+          maxLength: 20
+        status:
+          type: string
+          enum:
+            - alive
+            - not alive
+        relatives:
+          description: siblings and elters
+          type: array
+          uniqueItems: true
+          items:
+            $ref: '#/components/schemas/People'
+        children:
+          type: array
+          uniqueItems: true
+          items:
+            $ref: '#/components/schemas/People'
+      xml:
+        name: People

@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns="http://www.omg.org/spec/DMN/20151101/dmn.xsd" id="definitions" name="definitions"
+             namespace="http://camunda.org/schema/1.0/dmn">
+    <decision id="decision" name="Status">
+        <decisionTable id="decisionTable">
+            <input id="input1" label="StatusInput">
+                <inputExpression id="inputExpression1" typeRef="string">
+                    <text>statusInput</text>
+                </inputExpression>
+            </input>
+            <output id="output1" label="StatusOutput" name="statusOutput" typeRef="string"/>
+            <rule id="rule-1">
+                <inputEntry id="aliveInput">
+                    <text><![CDATA["alive"]]></text>
+                </inputEntry>
+                <outputEntry id="aliveOutput">
+                    <text><![CDATA["alive"]]></text>
+                </outputEntry>
+            </rule>
+            <rule id="rule-2">
+                <inputEntry id="notAliveInput">
+                    <text><![CDATA["not alive"]]></text>
+                </inputEntry>
+                <outputEntry id="notAliveOutput">
+                    <text><![CDATA["not alive"]]></text>
+                </outputEntry>
+            </rule>
+        </decisionTable>
+    </decision>
+</definitions>

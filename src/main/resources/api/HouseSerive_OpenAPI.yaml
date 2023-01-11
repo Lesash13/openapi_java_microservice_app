@@ -1,0 +1,130 @@
+openapi: 3.0.1
+info:
+  title: House management service
+  description: This is a sample API of House management service.
+  version: 1.0.0
+servers:
+  - url: 'https://house.service.de/v1'
+  - url: 'http://house.service.de/v1'
+tags:
+  - name: house
+    description: Everything about houses
+paths:
+  /house:
+    put:
+      tags:
+        - house
+      summary: Update an existing house
+      operationId: updateHouse
+      requestBody:
+        description: update house
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/House'
+        required: true
+      responses:
+        '204':
+          description: successful operation
+        '400':
+          description: Invalid ID supplied
+          content: { }
+        '404':
+          description: house not found
+          content: { }
+        '405':
+          description: Validation exception
+          content: { }
+      x-codegen-request-body-name: body
+    post:
+      tags:
+        - house
+      summary: Add a new house
+      operationId: addHouse
+      requestBody:
+        description: Add a new house
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/House'
+        required: true
+      responses:
+        '204':
+          description: successful operation
+        '405':
+          description: Invalid input
+          content: { }
+      x-codegen-request-body-name: body
+  /house/{houseId}/stuck:
+    get:
+      tags:
+        - house
+      summary: This operation stuck for 5 minutes and then return 404 error code
+      operationId: getStuck
+      parameters:
+        - name: houseId
+          in: path
+          description: ID of house to return
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '404':
+          description: Invalid status value
+          content: { }
+  /house/{houseId}:
+    get:
+      tags:
+        - house
+      summary: Find house by ID
+      description: Returns a single house
+      operationId: getHouseById
+      parameters:
+        - name: houseId
+          in: path
+          description: ID of house to return
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/House'
+        '400':
+          description: Invalid ID supplied
+          content: { }
+        '404':
+          description: house not found
+          content: { }
+components:
+  schemas:
+    House:
+      required:
+        - city
+        - street
+        - number
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        city:
+          type: string
+          example: St. Petersburh
+        street:
+          type: string
+          example: 12-13 Line V.O.
+        number:
+          type: integer
+          example: 14
+          format: int64
+        lastUsed:
+          type: string
+          format: date
+      xml:
+        name: House

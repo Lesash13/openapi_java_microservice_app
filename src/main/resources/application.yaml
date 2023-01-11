@@ -1,0 +1,36 @@
+cxf:
+  path: /ng-fs-api
+  endpoint-address: /integratedPeopleManagement/v1
+  jaxrs:
+    client:
+      address: houseservice:4443
+      classes-scan-packages: ngfs.integratedpeoplemanagement.houseservice
+spring:
+  application:
+    name: integrated-people-management
+  datasource:
+    url: jdbc:postgresql://localhost:5432/db
+    username: dev_09_ipm
+    password: dev_09_ipm
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    hibernate:
+      ddl-auto: validate
+      naming:
+        implicit-strategy: org.hibernate.boot.model.naming.ImplicitNamingStrategyJpaCompliantImpl
+        physical-strategy: org.springframework.boot.orm.jpa.hibernate.SpringPhysicalNamingStrategy
+    properties:
+      javax:
+        persistence:
+          validation:
+            group:
+              pre-remove: javax.validation.groups.Default
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+        format_sql: true
+        delimiter: ;
+
+
+logging:
+  level:
+    root: INFO
