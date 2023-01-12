@@ -76,7 +76,8 @@ resources/application.yaml
 #### Run service:
 
 ```sh
-gradle bootRun
+gradle bootJar
+java -jar /build/libs/openapi_java_microservice_app-1.0.0-SNAPSHOT.jar
 ```
 
 ## API example requests:
