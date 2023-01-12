@@ -108,7 +108,7 @@ bootJar {
                 'Build-Tool': "Gradle $gradle.gradleVersion",
                 'Built-By': System.properties['user.name'],
                 'Implementation-Title': rootProject.name,
-                'Implementation-Vendor': 'Deutsche Telekom IT GmbH',
+                'Implementation-Vendor': 'Vendor',
                 'Implementation-Version': "$project.version"
         )
     }
