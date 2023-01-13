@@ -4,7 +4,7 @@
 # Java Rest Microservice
 
 Simple example of rest microservice written on SpringBoot.
-Working with DB via Hibernate with the lep of flyway migration.
+Working with DB via Hibernate with flyway migration image.
 Includes mapstruct and dmn decision tables example.
 
 ### Built With
